@@ -116,49 +116,59 @@ export function PasscodeInput() {
         )}
       </p>
 
-      {/* Actual Input Setup (opacity 0 for accessibility and keyboard support) */}
-      <div
-        className="relative"
-        onClick={() => inputRef.current?.focus()}
-      >
-        <input
-          ref={inputRef}
-          type="text"
-          inputMode="numeric"
-          maxLength={4}
-          autoComplete="one-time-code"
-          pattern="[0-9]*" // only numeric input
-          value={value}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          onFocus={(e) => {
-            const len = e.target.value.length
-            e.target.setSelectionRange(Math.min(len, 3), len)
-            setIsFocused(true)
-          }}
-          onSelect={handleSelect}
-          onBlur={() => { setIsFocused(false); setIsAllSelected(false) }}
-          disabled={status !== "idle"}
-          className="absolute inset-0 z-10 opacity-0"
-          aria-label="Passcode input"
-        />
-
-        {/* Overlaid slots */}
-        <div className={`flex ${status === "error" ? "motion-safe:animate-[shake_300ms_ease-in-out]" : ""}`}>
-          {[0, 1, 2, 3].map((i) => {
-            const isAnyActive = status === "idle" && isFocused && !isAllSelected
-            return (
-              <Slot
-                key={i}
-                index={i}
-                char={value[i]}
-                isActive={isAnyActive && i === activeIndex}
-                isSelected={isAllSelected && value[i] !== undefined && status === "idle" && isFocused}
-                status={status}
-              />
-            )
-          })}
+      {/* Slots wrapper — input overlay is scoped to this area only */}
+      <div>
+        <div
+          className="relative"
+          onClick={() => inputRef.current?.focus()}
+        >
+          <input
+            ref={inputRef}
+            type="text"
+            inputMode="numeric"
+            maxLength={4}
+            autoComplete="one-time-code"
+            enterKeyHint="done"
+            pattern="[0-9]*"
+            value={value}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            onFocus={(e) => {
+              const len = e.target.value.length
+              e.target.setSelectionRange(Math.min(len, 3), len)
+              setIsFocused(true)
+            }}
+            onSelect={handleSelect}
+            onBlur={() => { setIsFocused(false); setIsAllSelected(false) }}
+            disabled={status !== "idle"}
+            className="absolute inset-0 z-10 opacity-0 caret-transparent text-transparent"
+            aria-label="Passcode input"
+          />
+          {/* Overlaid slots */}
+          <div className={`flex ${status === "error" ? "motion-safe:animate-[shake_300ms_ease-in-out]" : ""}`}>
+            {[0, 1, 2, 3].map((i) => {
+              const isAnyActive = status === "idle" && isFocused && !isAllSelected
+              return (
+                <Slot
+                  key={i}
+                  index={i}
+                  char={value[i]}
+                  isActive={isAnyActive && i === activeIndex}
+                  isSelected={isAllSelected && value[i] !== undefined && status === "idle" && isFocused}
+                  status={status}
+                />
+              )
+            })}
+          </div>
         </div>
+        <button
+          type="button"
+          onClick={handleSubmit}
+          disabled={value.length < 4 || status !== "idle"}
+          className="mt-3 w-full py-3 bg-highlight text-white font-medium rounded-slot disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-transform active:scale-[0.97] shadow-[0_2px_0_0_rgba(255,255,255,0.20)_inset]"
+        >
+          Verify
+        </button>
       </div>
     </div>
   )
