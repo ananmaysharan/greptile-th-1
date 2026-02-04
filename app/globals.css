@@ -1,17 +1,6 @@
 @import "tailwindcss";
 
 :root {
-  /* --background: #ffffff;
-  --foreground: #171717;
-  --border: #E4E4E4;
-  --fill: #FAFAFA;
-  --highlight: #107A4D;
-  --text-1: #323232;
-  --text-disabled: #858585;
-  --fill-disabled: #F3F2F2;
-  --error: lab(48.4493% 77.4328 61.5452);
-  --error-fill: #FFF9F9; */
-
   --background: oklch(100% 0 0);
   --foreground: oklch(21.11% 0 0);
   --border: oklch(91.75% 0 0);

@@ -34,7 +34,7 @@ export function Slot({
       ? "rounded-l-slot rounded-r-slot-inner"
       : isLast
         ? "rounded-l-slot-inner rounded-r-slot"
-        : "rounded-slot-inner"
+        : "rounded-slot-inner" // middle slots
     : isFirst
       ? "rounded-l-slot"
       : isLast
@@ -45,7 +45,6 @@ export function Slot({
   const selectedClasses = isSelected
     ? "ring-[3px] ring-highlight relative z-10"
     : ""
-
 
   // color setup
   const colorClasses = {

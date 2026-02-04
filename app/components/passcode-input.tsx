@@ -32,16 +32,16 @@ function statusReducer(state: Status, action: PasscodeAction): Status {
 }
 
 export function PasscodeInput() {
-  const [value, setValue] = useState("")
-  const [status, dispatch] = useReducer(statusReducer, "idle")
-  const [isFocused, setIsFocused] = useState(false)
-  const [isAllSelected, setIsAllSelected] = useState(false)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [value, setValue] = useState("") // passcode value
+  const [status, dispatch] = useReducer(statusReducer, "idle") // status state
+  const [isFocused, setIsFocused] = useState(false) // input focus state for hidden input
+  const [isAllSelected, setIsAllSelected] = useState(false) // select all
+  const inputRef = useRef<HTMLInputElement>(null) //hidden input
 
-  // Derived state
+  // Derived state for active border state
   const activeIndex = Math.min(value.length, 3)
 
-  // Focus management
+  // Focus management after status changes
   useEffect(() => {
     if (status === "idle") {
       inputRef.current?.focus()
@@ -70,6 +70,7 @@ export function PasscodeInput() {
     }
   }
 
+  // verification flow
   async function handleSubmit() {
     dispatch({ type: "SUBMIT" })
     await new Promise((resolve) => setTimeout(resolve, 2000)) // simulated delay
